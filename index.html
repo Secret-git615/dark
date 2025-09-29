@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>dark room</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "poppins", sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: Arial;
+  font-size: 15px;
+  text-align: center;
+  align-items: center;
+ background-color: black;
+ background-image: url('scary.jpg');
+ background-size: cover;
+ background-repeat: no-repeat;
+}
+
+.content {
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+#flashlight {
+  --Xpos: 20vw;
+  --Ypos: 20vh;
+  position: relative;
+}
+#flashlight:before{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(
+    circle 9em at var(--Xpos) var(--Ypos),
+    rgba(255, 254, 254, 0),
+    rgba(0, 0, 0, 1)
+  );
+}
+
+#button {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+#button button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 10px;
+  border: 3px solid rgb(188, 228, 243);
+  background: linear-gradient(to center, #36256f, #03e0dc);
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.3);
+  animation: float 3s ease-in-out infinite;
+}
+#button button:active {
+  background: linear-gradient(to center, #91de25, #f6f6f6);
+  box-shadow: 0px 2px 4px rgba(255, 254, 254, 0.2);
+}
+</style>
+</head>
+<body>
+
+<div id="flashlight">
+  <div class="content">
+    <h1 align="center">Hello, my name is...</h1>
+  <div id="button">
+ </div>
+</div>
+</div>
+<script>
+  document.addEventListener("mousemove", function (e) {
+    const flashlight = document.getElementById("flashlight");
+    flashlight.style.setProperty("--Xpos", e.clientX + "px");
+    flashlight.style.setProperty("--Ypos", e.clientY + "px");
+  });
+
+  const buttons = document.querySelectorAll('#button button');
+  const placed = [];
+  const buttonSize = 60;
+  const padding = 8; 
+
+  const maxX = window.innerWidth - 2*buttonSize - padding;
+  const maxY = window.innerHeight - 2*buttonSize - padding;
+
+  function isOverlapping(x, y) {
+    return placed.some(pos => {
+      return (
+        Math.abs(pos.x - x) < buttonSize + padding &&
+        Math.abs(pos.y - y) < buttonSize + padding
+      );
+    });
+  }
+
+  buttons.forEach(button => {
+    let x, y;
+    let tries = 0;
+    do {
+      x = Math.floor(Math.random() * (maxX - padding)) + padding;
+      y = Math.floor(Math.random() * (maxY - padding)) + padding;
+      tries++;
+      if (tries > 1000) break;
+    } while (isOverlapping(x, y));
+
+    placed.push({ x, y });
+    button.style.left = `${x}px`;
+    button.style.top = `${y}px`;
+  });
+</script>
+</body>
+</html>
