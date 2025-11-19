@@ -105,6 +105,20 @@ document.addEventListener('touchstart', e => {
     document.body.style.setProperty('--x', touch.clientX + 'px');
     document.body.style.setProperty('--y', touch.clientY + 'px');
 });
+function updateCursor(e) {
+    const x = e.clientX || (e.touches && e.touches[0].clientX);
+    const y = e.clientY || (e.touches && e.touches[0].clientY);
+    if (x !== undefined && y !== undefined) {
+        document.body.style.setProperty('--x', x + 'px');
+        document.body.style.setProperty('--y', y + 'px');
+    }
+}
+
+document.addEventListener('mousemove', updateCursor);
+document.addEventListener('touchstart', updateCursor);
+document.addEventListener('touchmove', e => { e.preventDefault(); updateCursor(e); });
+
+
 </script>
 </body>
 </html>
