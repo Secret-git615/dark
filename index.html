@@ -89,12 +89,14 @@ body {
 </div>
 <script>
 document.addEventListener('mousemove', e => {
+    const flashlight = document.getElementById("flashlight");
     document.body.style.setProperty('--x', e.clientX + 'px');
     document.body.style.setProperty('--y', e.clientY + 'px');
 });
 
 document.addEventListener('touchmove', e => {
-    e.preventDefault(); 
+    e.preventDefault();
+    const flashlight = document.getElementById("flashlight");
     const touch = e.touches[0];
     document.body.style.setProperty('--x', touch.clientX + 'px');
     document.body.style.setProperty('--y', touch.clientY + 'px');
@@ -102,10 +104,12 @@ document.addEventListener('touchmove', e => {
 
 document.addEventListener('touchstart', e => {
     const touch = e.touches[0];
+    const flashlight = document.getElementById("flashlight");
     document.body.style.setProperty('--x', touch.clientX + 'px');
     document.body.style.setProperty('--y', touch.clientY + 'px');
 });
 function updateCursor(e) {
+    const flashlight = document.getElementById("flashlight");
     const x = e.clientX || (e.touches && e.touches[0].clientX);
     const y = e.clientY || (e.touches && e.touches[0].clientY);
     if (x !== undefined && y !== undefined) {
