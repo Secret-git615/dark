@@ -88,43 +88,19 @@ body {
 </div>
 </div>
 <script>
-  document.addEventListener("mousemove", function (e) {
-    const flashlight = document.getElementById("flashlight");
-    flashlight.style.setProperty("--Xpos", e.clientX + "px");
-    flashlight.style.setProperty("--Ypos", e.clientY + "px");
-  });
+function updateCursor(e) {
+    const x = e.clientX || (e.touches && e.touches[0].clientX);
+    const y = e.clientY || (e.touches && e.touches[0].clientY);
+    if (x !== undefined && y !== undefined) {
+        document.body.style.setProperty('--x', x + 'px');
+        document.body.style.setProperty('--y', y + 'px');
+    }
+}
 
-  const buttons = document.querySelectorAll('#button button');
-  const placed = [];
-  const buttonSize = 60;
-  const padding = 8; 
+document.addEventListener('mousemove', updateCursor);
+document.addEventListener('touchstart', updateCursor);
+document.addEventListener('touchmove', e => { e.preventDefault(); updateCursor(e); });
 
-  const maxX = window.innerWidth - 2*buttonSize - padding;
-  const maxY = window.innerHeight - 2*buttonSize - padding;
-
-  function isOverlapping(x, y) {
-    return placed.some(pos => {
-      return (
-        Math.abs(pos.x - x) < buttonSize + padding &&
-        Math.abs(pos.y - y) < buttonSize + padding
-      );
-    });
-  }
-
-  buttons.forEach(button => {
-    let x, y;
-    let tries = 0;
-    do {
-      x = Math.floor(Math.random() * (maxX - padding)) + padding;
-      y = Math.floor(Math.random() * (maxY - padding)) + padding;
-      tries++;
-      if (tries > 1000) break;
-    } while (isOverlapping(x, y));
-
-    placed.push({ x, y });
-    button.style.left = `${x}px`;
-    button.style.top = `${y}px`;
-  });
 </script>
 </body>
 </html>
