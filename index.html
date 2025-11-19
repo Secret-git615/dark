@@ -1,128 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>dark room</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "poppins", sans-serif;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dark Room</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial;
-  font-size: 15px;
-  text-align: center;
-  align-items: center;
- background-color: black;
- background-image: url('scary.jpg');
- background-size: cover;
- background-repeat: no-repeat;
-}
+    body {
+      background-color: black;
+      background-image: url('scary.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
 
-.content {
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.5);
-  color: #f1f1f1;
-  width: 100%;
-  padding: 20px;
-  min-height: 100vh;
-  overflow-y: auto;
-}
+    #flashlight {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
 
-#flashlight {
-  --Xpos: 20vw;
-  --Ypos: 20vh;
-  position: relative;
-}
-#flashlight:before{
-  content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  pointer-events: none;
-  z-index: 3;
-  background: radial-gradient(
-    circle 9em at var(--Xpos) var(--Ypos),
-    rgba(255, 254, 254, 0),
-    rgba(0, 0, 0, 1)
-  );
-}
+    #flashlight::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(
+        circle 9em at var(--x, 50vw) var(--y, 50vh),
+        rgba(255, 255, 255, 0),
+        rgba(0, 0, 0, 0.95)
+      );
+    }
 
-#button {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-}
+    .content {
+      position: relative;
+      z-index: 3;
+      color: #f1f1f1;
+      text-align: center;
+      padding: 2rem;
+    }
 
-#button button {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
-  border-radius: 10px;
-  border: 3px solid rgb(188, 228, 243);
-  background: linear-gradient(to center, #36256f, #03e0dc);
-  color: rgb(0, 0, 0);
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.3);
-  animation: float 3s ease-in-out infinite;
-}
-#button button:active {
-  background: linear-gradient(to center, #91de25, #f6f6f6);
-  box-shadow: 0px 2px 4px rgba(255, 254, 254, 0.2);
-}
-</style>
+    .content h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .content button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #36256f, #03e0dc);
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(255, 255, 255, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .content button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #91de25, #f6f6f6);
+    }
+  </style>
 </head>
 <body>
-
-<div id="flashlight">
+  <div id="flashlight"></div>
   <div class="content">
-    <h1 align="center">Hello, my name is...</h1>
-  <div id="button">
- </div>
-</div>
-</div>
-<script>
-document.addEventListener('mousemove', e => {
-    const flashlight = document.getElementById("flashlight");
-    document.body.style.setProperty('--x', e.clientX + 'px');
-    document.body.style.setProperty('--y', e.clientY + 'px');
-});
+    <h1>Hello, my name is...</h1>
+    <button onclick="alert('You found the button!')">🔦 Click Me</button>
+  </div>
 
-document.addEventListener('touchmove', e => {
-    e.preventDefault();
-    const flashlight = document.getElementById("flashlight");
-    const touch = e.touches[0];
-    document.body.style.setProperty('--x', touch.clientX + 'px');
-    document.body.style.setProperty('--y', touch.clientY + 'px');
-});
-
-document.addEventListener('touchstart', e => {
-    const touch = e.touches[0];
-    const flashlight = document.getElementById("flashlight");
-    document.body.style.setProperty('--x', touch.clientX + 'px');
-    document.body.style.setProperty('--y', touch.clientY + 'px');
-});
-function updateCursor(e) {
-    const flashlight = document.getElementById("flashlight");
-    const x = e.clientX || (e.touches && e.touches[0].clientX);
-    const y = e.clientY || (e.touches && e.touches[0].clientY);
-    if (x !== undefined && y !== undefined) {
-        document.body.style.setProperty('--x', x + 'px');
-        document.body.style.setProperty('--y', y + 'px');
+  <script>
+    function updateFlashlight(e) {
+      const x = e.clientX || (e.touches && e.touches[0].clientX);
+      const y = e.clientY || (e.touches && e.touches[0].clientY);
+      if (x && y) {
+        document.documentElement.style.setProperty('--x', x + 'px');
+        document.documentElement.style.setProperty('--y', y + 'px');
+      }
     }
-}
 
-document.addEventListener('mousemove', updateCursor);
-document.addEventListener('touchstart', updateCursor);
-document.addEventListener('touchmove', e => { e.preventDefault(); updateCursor(e); });
-
-
-</script>
+    document.addEventListener('mousemove', updateFlashlight);
+    document.addEventListener('touchstart', updateFlashlight);
+    document.addEventListener('touchmove', e => {
+      e.preventDefault();
+      updateFlashlight(e);
+    }, { passive: false });
+  </script>
 </body>
 </html>
